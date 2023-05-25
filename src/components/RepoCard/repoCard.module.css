@@ -1,0 +1,88 @@
+.root {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-gap: 32px;
+    width: 100%;
+    max-width: 1340px;
+    min-height: 224px;
+    padding: 40px;
+    margin-bottom: 36px;
+    background-color: #fff;
+    border-radius: 16px;
+    filter: drop-shadow(0px 24px 64px rgba(0, 0, 0, 0.04));
+}
+
+.image {
+    width: 128px;
+    height: 144px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    background: linear-gradient(321.69deg, #4481EB 0%, #04BEFE 100%);
+}
+
+/* Repository information block */
+
+.info {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.repoName {
+    margin: 0 0 8px 0;
+    color: #081F32;
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 25px;
+}
+
+.author, .language, .description {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 25px;
+}
+
+.author {
+    color: #A5ADBB;
+    margin: 0 0 2px 0;
+}
+
+.language {
+    color: #A5ADBB;
+    margin: 0 0 6px 0;
+}
+
+.description {
+    color: #6E798C;
+}
+
+/* Repository stats block */
+
+.stats {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    min-width: 150px;
+}
+
+.statsIcon {
+    position: absolute;
+    left: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.stars {
+    position: relative;
+    margin: 0 0 25px 0;
+}
+
+.watchers {
+    position: relative;
+    margin: 0 0 8px 0;
+}

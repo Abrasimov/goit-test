@@ -1,5 +1,21 @@
 .root {
     width: 100%;
-    height: 100vh;
-    background-color: #333;
+    min-height: 100vh;
+    background-color: #e5e5e5;
+}
+
+.contentWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 32px;
+}
+
+.cardsWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
 }
