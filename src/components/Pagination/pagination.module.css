@@ -1,3 +1,67 @@
 .root {
-    background-color: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.root__disabled {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+.paginationControl {
+    margin: 0 10px;
+    padding: 10px;
+    border: none;
+    background: none;
+    font-family: "Archivo", sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 20px;
+    transition: all 0.3s;
+}
+
+.paginationControl:hover {
+    background: #65b79a;
+    cursor: pointer;
+    color: #fff;
+}
+
+.paginationControl:disabled {
+    pointer-events: none;
+}
+
+.pageButton {
+    position: relative;
+    width: 30px;
+    height: 40px;
+    margin: 0 5px;
+    border: none;
+    background: none;
+    font-family: "Archivo", sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 20px;
+    transition: all 0.3s;
+}
+
+.pageButton:hover {
+    background: #65b79a;
+    cursor: pointer;
+    color: #fff;
+}
+
+.pageButton__selected {
+    pointer-events: none;
+}
+
+.pageButton__selected::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #65b79a;
 }
