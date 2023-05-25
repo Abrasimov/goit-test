@@ -3,9 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { setCurrentPage } from "../../store/slices/paginationSlice";
 import usePagination from "../../hooks/usePagination";
 
-import { MAX_VISIBLE_PAGES } from "../../config.json";
-
 import style from "./pagination.module.css";
+
+import config from "../../config.json";
+
+const { MAX_VISIBLE_PAGES } = config;
 
 const Pagination = () => {
     const { loading } = useSelector((state) => state.githubData);

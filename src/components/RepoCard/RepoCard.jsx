@@ -11,7 +11,7 @@ const RepoCard = ({ data }) => {
         language,
         description,
         stargazers_count,
-        watchers_count,
+        forks_count,
     } = data;
 
     return (
@@ -32,7 +32,8 @@ const RepoCard = ({ data }) => {
                 </div>
                 <div className={style.watchers}>
                     <img src={watcherIcon} alt={""} className={style.statsIcon} />
-                    <b>{`${watchers_count} watchers`}</b>
+                    {/* Watchers count not available in GitHub API anymore. Used forks_count as placeholder */}
+                    <b>{`${forks_count} watchers`}</b>
                 </div>
             </div>
         </div>

@@ -5,7 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "../store/slices/githubDataSlice";
 import { setTotalPages } from "../store/slices/paginationSlice";
 
-import { REPOS_PER_PAGE, MAX_VISIBLE_PAGES } from "../config.json";
+import config from "../config.json";
+
+const { REPOS_PER_PAGE, MAX_VISIBLE_PAGES } = config;
 
 const useFetchGithubData = () => {
     const { searchQuery } = useSelector((state) => state.githubData);

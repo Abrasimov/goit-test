@@ -4,7 +4,9 @@ import { useDispatch } from "react-redux";
 import { setSearchQuery } from "../store/slices/githubDataSlice";
 import { setCurrentPage } from "../store/slices/paginationSlice";
 
-import { DEFAULT_SEARCH_QUERY, SEARCH_DEBOUNCE_TIMEOUT } from "../config.json";
+import config from "../config.json";
+
+const { DEFAULT_SEARCH_QUERY, SEARCH_DEBOUNCE_TIMEOUT } = config;
 
 const useSearchBar = () => {
     const dispatch = useDispatch();
