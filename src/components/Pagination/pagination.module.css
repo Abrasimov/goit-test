@@ -45,6 +45,12 @@
     transition: all 0.3s;
 }
 
+@media screen and (max-width: 500px) {
+    .pageButton {
+        display: none;
+    }
+}
+
 .pageButton:hover {
     background: #65b79a;
     cursor: pointer;
@@ -53,6 +59,12 @@
 
 .pageButton__selected {
     pointer-events: none;
+}
+
+@media screen and (max-width: 500px) {
+    .pageButton__selected {
+        display: block;
+    }
 }
 
 .pageButton__selected::after {
