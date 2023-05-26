@@ -20,9 +20,13 @@ const usePagination = () => {
         if (totalPages === 0) {
             isPreviousPagePresent = false;
             isNextPagePresent = false;
-        } else if (currentPage === 1) {
+        }
+
+        if (currentPage === 1) {
             isPreviousPagePresent = false;
-        } else if (currentPage === totalPages) {
+        }
+
+        if (currentPage === totalPages) {
             isNextPagePresent = false;
         }
 
