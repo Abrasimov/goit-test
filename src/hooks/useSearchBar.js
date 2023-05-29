@@ -1,15 +1,16 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { setSearchQuery } from "../store/slices/githubDataSlice";
-import { setCurrentPage } from "../store/slices/paginationSlice";
+import { fetchGithubData } from "../store/slices/githubDataSlice";
 
 import config from "../config.json";
 
 const { DEFAULT_SEARCH_QUERY, SEARCH_DEBOUNCE_TIMEOUT } = config;
 
-const useSearchBar = () => {
+const useSearchBar = (currentPage, setCurrentPage) => {
     const dispatch = useDispatch();
+
+    const [searchQuery, setSearchQuery] = useState(DEFAULT_SEARCH_QUERY);
 
     const debounceTimeout = useRef();
 
@@ -22,12 +23,16 @@ const useSearchBar = () => {
             debounceTimeout.current = setTimeout(() => {
                 const inputValue = event.target.value;
 
-                dispatch(setCurrentPage(1));
-                dispatch(setSearchQuery(inputValue || DEFAULT_SEARCH_QUERY));
+                setSearchQuery(inputValue);
+                setCurrentPage(1);
             }, SEARCH_DEBOUNCE_TIMEOUT);
         },
-        [dispatch]
+        [setCurrentPage]
     );
+
+    useEffect(() => {
+        dispatch(fetchGithubData({ searchQuery, currentPage }));
+    }, [dispatch, searchQuery, currentPage]);
 
     return { debouncedHandleChange };
 };

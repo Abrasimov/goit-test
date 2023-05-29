@@ -1,16 +1,12 @@
-import { useEffect, useCallback, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import {
-    goToNextPage,
-    goToPreviousPage,
-    setIsNextPagePresent,
-    setIsPreviousPagePresent,
-} from "../store/slices/paginationSlice";
+import { useEffect, useCallback, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
 
 const usePagination = () => {
-    const { totalPages, currentPage } = useSelector((state) => state.pagination);
-    const dispatch = useDispatch();
+    const { totalPages } = useSelector((state) => state.githubData);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [isPreviousPagePresent, setIsPreviousPagePresent] = useState(false);
+    const [isNextPagePresent, setIsNextPagePresent] = useState(true);
 
     // Handle enabling/disabling Previous and Next pagination buttons
     useEffect(() => {
@@ -30,23 +26,32 @@ const usePagination = () => {
             isNextPagePresent = false;
         }
 
-        dispatch(setIsPreviousPagePresent(isPreviousPagePresent));
-        dispatch(setIsNextPagePresent(isNextPagePresent));
-    }, [dispatch, currentPage, totalPages]);
+        setIsPreviousPagePresent(isPreviousPagePresent);
+        setIsNextPagePresent(isNextPagePresent);
+    }, [currentPage, totalPages]);
 
     const openNextPage = useCallback(() => {
-        dispatch(goToNextPage());
-    }, [dispatch]);
+        setCurrentPage((prevState) => prevState + 1);
+    }, []);
 
     const openPreviousPage = useCallback(() => {
-        dispatch(goToPreviousPage());
-    }, [dispatch]);
+        setCurrentPage((prevState) => prevState - 1);
+    }, []);
 
+    // Generate array with page numbers (E.g.: [1, 2, 3, 4])
     const pagesNumbers = useMemo(() => {
         return Array.from({ length: totalPages }, (_, index) => index + 1);
     }, [totalPages]);
 
-    return { openNextPage, openPreviousPage, pagesNumbers };
+    return {
+        currentPage,
+        setCurrentPage,
+        openNextPage,
+        openPreviousPage,
+        isNextPagePresent,
+        isPreviousPagePresent,
+        pagesNumbers,
+    };
 };
 
 export default usePagination;

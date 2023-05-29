@@ -4,10 +4,10 @@ import useSearchBar from "../../hooks/useSearchBar";
 
 import style from "./searchBar.module.css";
 
-const SearchBar = () => {
+const SearchBar = ({ currentPage, setCurrentPage }) => {
     const { loading } = useSelector((state) => state.githubData);
 
-    const { debouncedHandleChange } = useSearchBar();
+    const { debouncedHandleChange } = useSearchBar(currentPage, setCurrentPage);
 
     return (
         <input

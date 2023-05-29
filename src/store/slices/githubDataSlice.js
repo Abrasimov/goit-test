@@ -1,23 +1,79 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const initialState = {
-    searchQuery: "react",
-    loading: true,
-};
+import fetchGithubDataApi from "../../api/githubDataApi";
 
-export const githubDataSlice = createSlice({
+import config from "../../config.json";
+
+const { REPOS_PER_PAGE, MAX_VISIBLE_PAGES } = config;
+
+export const fetchGithubData = createAsyncThunk(
+    "data/fetchGithubData",
+    async (params, { rejectWithValue }) => {
+        try {
+            return await fetchGithubDataApi(params);
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+const githubDataSlice = createSlice({
     name: "githubData",
-    initialState,
-    reducers: {
-        setSearchQuery: (state, action) => {
-            state.searchQuery = action.payload;
-        },
-        setLoading: (state, action) => {
-            state.loading = !!action.payload;
-        },
+    initialState: {
+        githubRepos: [],
+        totalPages: 1,
+        loading: false,
+        error: null,
+    },
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchGithubData.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchGithubData.fulfilled, (state, action) => {
+                state.loading = false;
+
+                const { currentPage, items, total_count } = action.payload;
+
+                const totalPages = Math.ceil(total_count / REPOS_PER_PAGE);
+
+                if (totalPages - currentPage > MAX_VISIBLE_PAGES) {
+                    state.totalPages = currentPage + MAX_VISIBLE_PAGES;
+                } else {
+                    state.totalPages = totalPages;
+                }
+
+                state.githubRepos = items;
+            })
+            .addCase(fetchGithubData.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            });
     },
 });
 
-export const { setSearchQuery, setLoading } = githubDataSlice.actions;
-
 export default githubDataSlice.reducer;
+
+// const initialState = {
+//     searchQuery: "react",
+//     loading: true,
+// };
+//
+// export const githubDataSlice = createSlice({
+//     name: "githubData",
+//     initialState,
+//     reducers: {
+//         setSearchQuery: (state, action) => {
+//             state.searchQuery = action.payload;
+//         },
+//         setLoading: (state, action) => {
+//             state.loading = !!action.payload;
+//         },
+//     },
+// });
+//
+// export const { setSearchQuery, setLoading } = githubDataSlice.actions;
+//
+// export default githubDataSlice.reducer;

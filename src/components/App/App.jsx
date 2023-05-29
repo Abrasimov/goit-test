@@ -1,35 +1,50 @@
 import { useSelector } from "react-redux";
 
-import useFetchGithubData from "../../hooks/useFetchGithubData";
+import usePagination from "../../hooks/usePagination";
 import SearchBar from "../SearchBar";
 import RepoCard from "../RepoCard";
 import Pagination from "../Pagination";
 import Spinner from "../Spinner";
 
-import style from "./App.module.css";
+import style from "./app.module.css";
 
 function App() {
-    const { loading, searchQuery } = useSelector((state) => state.githubData);
+    const { githubRepos, loading, error } = useSelector((state) => state.githubData);
 
-    const { reposData } = useFetchGithubData();
+    const { currentPage, setCurrentPage, ...paginationProps } = usePagination();
 
-    const cardsContent =
-        reposData.length > 0 ? (
-            reposData.map((repo) => {
-                return <RepoCard key={repo.id} data={repo} />;
-            })
-        ) : (
+    let content;
+
+    if (loading) {
+        content = <Spinner />;
+    } else if (error) {
+        content = (
             <div className={style.noResults}>
-                <p>{`No results found for the "${searchQuery}" search query.`}</p>
+                <p>Unexpected error occurred. Please, try again later.</p>
             </div>
         );
+    } else if (githubRepos.length === 0) {
+        content = (
+            <div className={style.noResults}>
+                <p>Repositories not found.</p>
+            </div>
+        );
+    } else {
+        content = githubRepos.map((repo) => {
+            return <RepoCard key={repo.id} data={repo} />;
+        });
+    }
 
     return (
         <div className={style.root}>
-            <div className={style.contentWrapper}>
-                <SearchBar />
-                <div className={style.cardsWrapper}>{loading ? <Spinner /> : cardsContent}</div>
-                <Pagination />
+            <div className={style.pageWrapper}>
+                <SearchBar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+                <div className={style.contentWrapper}>{content}</div>
+                <Pagination
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    paginationProps={paginationProps}
+                />
             </div>
         </div>
     );

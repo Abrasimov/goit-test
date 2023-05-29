@@ -4,7 +4,7 @@
     background-color: #e5e5e5;
 }
 
-.contentWrapper {
+.pageWrapper {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,7 +12,7 @@
     padding: 32px;
 }
 
-.cardsWrapper {
+.contentWrapper {
     display: flex;
     justify-content: center;
     align-items: center;

@@ -1,7 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
-
-import { setCurrentPage } from "../../store/slices/paginationSlice";
-import usePagination from "../../hooks/usePagination";
+import { useSelector } from "react-redux";
 
 import style from "./pagination.module.css";
 
@@ -9,14 +6,16 @@ import config from "../../config.json";
 
 const { MAX_VISIBLE_PAGES } = config;
 
-const Pagination = () => {
-    const { loading } = useSelector((state) => state.githubData);
-    const { currentPage, isPreviousPagePresent, isNextPagePresent } = useSelector(
-        (state) => state.pagination
-    );
-    const dispatch = useDispatch();
+const Pagination = ({ currentPage, setCurrentPage, paginationProps }) => {
+    const {
+        openNextPage,
+        openPreviousPage,
+        isNextPagePresent,
+        isPreviousPagePresent,
+        pagesNumbers,
+    } = paginationProps;
 
-    const { openNextPage, openPreviousPage, pagesNumbers } = usePagination();
+    const { loading } = useSelector((state) => state.githubData);
 
     const rootClass = `${style.root} ${loading ? style.root__disabled : ""}`;
 
@@ -32,15 +31,13 @@ const Pagination = () => {
             {pagesNumbers.map((_, index) => {
                 const pageNumber = index + 1;
                 const isPageSelected = currentPage === pageNumber;
+                const isPageInRange = Math.abs(pageNumber - currentPage) <= MAX_VISIBLE_PAGES / 2;
 
                 /**
                  * E.g.: If selected page number 10 user should see only
                  * pages 5-15 (if MAX_VISIBLE_PAGES is 10)
                  */
-                if (
-                    pageNumber - currentPage < -(MAX_VISIBLE_PAGES / 2) ||
-                    pageNumber - currentPage > MAX_VISIBLE_PAGES / 2
-                ) {
+                if (!isPageInRange) {
                     return null;
                 }
 
@@ -52,7 +49,7 @@ const Pagination = () => {
                     <button
                         className={pageButtonClass}
                         key={pageNumber}
-                        onClick={() => dispatch(setCurrentPage(pageNumber))}
+                        onClick={() => setCurrentPage(pageNumber)}
                     >
                         {pageNumber}
                     </button>
