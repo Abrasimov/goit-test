@@ -2,10 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import fetchGithubDataApi from "../../api/githubDataApi";
 
-import config from "../../config.json";
-
-const { REPOS_PER_PAGE, MAX_VISIBLE_PAGES } = config;
-
 export const fetchGithubData = createAsyncThunk(
     "data/fetchGithubData",
     async (params, { rejectWithValue }) => {
@@ -21,7 +17,7 @@ const githubDataSlice = createSlice({
     name: "githubData",
     initialState: {
         githubRepos: [],
-        totalPages: 1,
+        totalReposAmount: null,
         loading: false,
         error: null,
     },
@@ -35,17 +31,10 @@ const githubDataSlice = createSlice({
             .addCase(fetchGithubData.fulfilled, (state, action) => {
                 state.loading = false;
 
-                const { currentPage, items, total_count } = action.payload;
-
-                const totalPages = Math.ceil(total_count / REPOS_PER_PAGE);
-
-                if (totalPages - currentPage > MAX_VISIBLE_PAGES) {
-                    state.totalPages = currentPage + MAX_VISIBLE_PAGES;
-                } else {
-                    state.totalPages = totalPages;
-                }
+                const { items, total_count } = action.payload;
 
                 state.githubRepos = items;
+                state.totalReposAmount = total_count;
             })
             .addCase(fetchGithubData.rejected, (state, action) => {
                 state.loading = false;

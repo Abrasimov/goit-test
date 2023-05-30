@@ -20,7 +20,7 @@
     width: 100%;
 }
 
-.noResults {
+.errorWrapper {
     display: flex;
     justify-content: center;
     align-items: center;

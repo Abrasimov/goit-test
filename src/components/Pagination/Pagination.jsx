@@ -2,9 +2,7 @@ import { useSelector } from "react-redux";
 
 import style from "./pagination.module.css";
 
-import config from "../../config.json";
-
-const { MAX_VISIBLE_PAGES } = config;
+const getLoadingState = (state) => state.githubData.loading;
 
 const Pagination = ({ currentPage, setCurrentPage, paginationProps }) => {
     const {
@@ -15,7 +13,7 @@ const Pagination = ({ currentPage, setCurrentPage, paginationProps }) => {
         pagesNumbers,
     } = paginationProps;
 
-    const { loading } = useSelector((state) => state.githubData);
+    const loading = useSelector(getLoadingState);
 
     const rootClass = `${style.root} ${loading ? style.root__disabled : ""}`;
 
@@ -28,18 +26,8 @@ const Pagination = ({ currentPage, setCurrentPage, paginationProps }) => {
             >
                 Previous
             </button>
-            {pagesNumbers.map((_, index) => {
-                const pageNumber = index + 1;
+            {pagesNumbers.map((pageNumber) => {
                 const isPageSelected = currentPage === pageNumber;
-                const isPageInRange = Math.abs(pageNumber - currentPage) <= MAX_VISIBLE_PAGES / 2;
-
-                /**
-                 * E.g.: If selected page number 10 user should see only
-                 * pages 5-15 (if MAX_VISIBLE_PAGES is 10)
-                 */
-                if (!isPageInRange) {
-                    return null;
-                }
 
                 const pageButtonClass = `${style.pageButton} ${
                     isPageSelected ? style.pageButton__selected : ""
