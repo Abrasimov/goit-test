@@ -31,7 +31,7 @@ const useSearchBar = (currentPage, setCurrentPage) => {
     );
 
     useEffect(() => {
-        dispatch(fetchGithubData({ searchQuery, currentPage }));
+        dispatch(fetchGithubData({ searchQuery }));
     }, [dispatch, searchQuery, currentPage]);
 
     return { debouncedHandleChange };
